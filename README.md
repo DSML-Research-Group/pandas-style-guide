@@ -1,6 +1,6 @@
 # Pandas Style Guide
 
-*A mostly reasonable approach to JavaScript*
+*A mostly reasonable approach to Pandas*
 
 This guide offers recommendations for writing high-quality code with Pandas and DataFrames. It is intended to promote consistency, reliability, maintainability, and readability among practitioners, especially for production systems rather than ad-hoc exploratory work.
 
@@ -18,7 +18,7 @@ df['column']
 df.column
 ```
 
-When selecting a column in a dataframe users should use dictionary like selection e.g. `df['column']` and not property selection e.g. `df.column`.
+When selecting a column in a dataframe, users should use dictionary like selection e.g. `df['column']` and not property selection e.g. `df.column`.
 
 Why:
 * It makes it more explict to the user that you are accessing a column and not a standard property or method
@@ -34,7 +34,7 @@ df = df.drop(columns='A')
 df.drop(columns='A', inplace=True)
 ```
 
-Some operations can either be performed inplace or by re-assignment. Users should always opt to re-assignment for better readability. Both operation, with a few exceptions, perform a data copy and therefore don't have any performance differences.
+Some operations can either be performed inplace or by re-assignment. Users should always opt to re-assignment for better readability. Both operations, with a few exceptions, perform a data copy and therefore don't have any performance differences.
 
 ## Querying
 
