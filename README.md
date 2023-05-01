@@ -1,12 +1,10 @@
 # Pandas Style Guide
 
-*A mostly reasonable approach to JavaScript*
-
 This guide offers recommendations for writing high-quality code with Pandas and DataFrames. It is intended to promote consistency, reliability, maintainability, and readability among practitioners, especially for production systems rather than ad-hoc exploratory work.
 
 The need for this guide arises from the diverse backgrounds and language experiences of Pandas users, such as data scientists, data engineers, researchers, and software engineers, which can result in inconsistent coding styles and the use of poor practices.
 
-## Table of Contents
+
 
 ## Column selection
 
@@ -122,3 +120,45 @@ df = func_1(df)
 ```
 
 In large code bases, it can be tempting to keep adding columns to a dataframe and use it as the data exchange format between methods and functions. This however leads to code which is difficult to maintain as readers can't directly determine the schema of a DataFrame without running the code. It is more preferable to use dataclasses as an interchange format as the class definition is effectively immutable and specified explicitly (or if Python < 3.6 use namedtuples).
+
+## Spaghetti Code (Bad)
+
+```python
+# Import data
+df_raw = pd.read_csv("path/to/data/file.csv")
+
+# Clean data
+df_raw["id"] = df_raw["id"].astype(str)
+df_merged = df_raw.merge(df2, on="id")
+df_final = df_merged.drop(columns=["col_5", "col_6", "col_7"])
+
+# Investigate data
+df_agg = df_final.groupby("id").size()
+```
+Above is an example of spaghetti code. In each step of our data cleaning process, we create a new dataframe. This ultamitely clutters our namespace, uses up memory, and is difficult to understand
+
+## Method Chaining
+```python
+new_df = (                          # Wrap everything in ()'s
+    original_df                     # Name of data frame to modify
+    .query("text_length > 140")     # Subset based on text length
+    .sort_values(by="text_length")  # Sort entire df by text length
+    .reset_index()                  # Reset index of subsetted df
+)
+```
+Method chaining is the process of daisy chaining our Pandas methods together to acheive our desired dataframe state. This allows us to keep our namespace clean, reduces memory usage, and is much more human readable
+
+## Assign Method
+```python
+
+df= df[["col1", "col2", "col3"]]
+
+df = df.assign(                          
+     col1= df["col1"].astype(str)
+     col2 = df["col2"].apply(lambda x: x*100)
+     col4 = df["col3"].apply(pd.round(3))             
+)
+```
+
+Pandas `.assign()` method allows you to apply multiple functions to columns in a dataframe sequentially. Notice how we updated `col1` and `col2` as well as created a new column `col4`
+
