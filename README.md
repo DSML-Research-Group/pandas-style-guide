@@ -36,6 +36,22 @@ df.drop(columns='A', inplace=True)
 
 Some operations can either be performed inplace or by re-assignment. Users should always opt to re-assignment for better readability. Both operation, with a few exceptions, perform a data copy and therefore don't have any performance differences.
 
+## Querying
+
+```python
+# Good
+mask = df.loc[df.col > 3, :]
+
+# Bad
+mask = df[df.col > 3]
+```
+
+When querying a dataframe users should use `.loc` and not the shorthand `[]` notation.
+
+Why:
+* This avoids ambiguity with the `[]` operator which can be used for both column selection and querying
+* SettingWithCopy errors can occur when using the `[]` operator 
+
 ## Schema contract
 
 ```python
