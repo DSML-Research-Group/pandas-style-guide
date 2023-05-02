@@ -137,7 +137,7 @@ df_final = df_merged.drop(columns=["col_5", "col_6", "col_7"])
 # Investigate data
 df_agg = df_final.groupby("id").size()
 ```
-Above is an example of spaghetti code. In each step of our data cleaning process, we create a new dataframe. This ultamitely clutters our namespace, uses up memory, and is difficult to understand
+Above is an example of spaghetti code. In each step of our data cleaning process, we create a new dataframe. This ultimately clutters our namespace, uses up memory, and is difficult to understand
 
 ## Method Chaining
 ```python
@@ -148,7 +148,7 @@ new_df = (                          # Wrap everything in ()'s
     .reset_index()                  # Reset index of subsetted df
 )
 ```
-Method chaining is the process of daisy chaining our Pandas methods together to acheive our desired dataframe state. This allows us to keep our namespace clean, reduces memory usage, and is much more human readable
+Method chaining is the process of daisy chaining our Pandas methods together to acheive our desired dataframe state. This allows us to keep our namespace clean, reduces memory usage, and is much more human readable. This is a much better alternative to spaghetti code.
 
 ## Assign Method
 ```python
@@ -162,5 +162,36 @@ df = df.assign(
 )
 ```
 
-Pandas `.assign()` method allows you to apply multiple functions to columns in a dataframe sequentially. Notice how we updated `col1` and `col2` as well as created a new column `col4`
+Pandas `.assign()` method allows you to apply multiple functions to columns in a dataframe sequentially. Notice how we updated `col1` and `col2` as well as created a new column `col4`. 
 
+
+## Categorical Type
+
+```python
+df = { 
+       "cat_col1": [1,2,3], 
+       "cat_col2": ["a", "b", "c"]
+     }
+     
+df = pd.DataFrame(df)
+
+# Good
+df = df.assign(                          
+     cat_col1= df["cat_col1"].astype("category")
+     cat_col2 = df["cat_col2"].astype("category")           
+)
+
+# Bad 
+df = df.assign(                          
+     cat_col1= df["cat_col1"].astype(int)
+     cat_col2 = df["cat_col2"].astype(str)           
+)
+```
+Categoricals are a pandas data type corresponding to categorical variables in statistics. A categorical variable takes on a limited, and usually fixed, number of possible values. In contrast to statistical categorical variables, categorical data might have an order (e.g. ‘strongly agree’ vs ‘agree’ or ‘first observation’ vs. ‘second observation’), but numerical operations (additions, divisions, …) are not possible. All values of categorical data are either in categories or np.nan. Order is defined by the order of categories, not lexical order of the values.
+
+```python
+
+# Reordering categories
+df['cat_col2'] = df['cat_col2'].cat.reorder_categories(["c", "b", "a"])
+
+```
