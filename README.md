@@ -66,7 +66,7 @@ df = df[['col1', 'col2', 'col3']]
 
 After a DataFrame initialisation, users should explicitly select the columns to use, even if all are selected. This creates a clear contract between the code and user about what is expected in the downstream data schema.
 
-It is also recommended to explicitly specify data types as well. When reading files data types can subtly change with small alterations e.g. from integer to float, or numerical to string. It is helpful for the program to throw an error if the input is unexpected, otherwise it will continue silently.
+It is also recommended to explicitly specify data types as well. When reading files, data types can subtly change with small alterations e.g. from integer to float, or numerical to string. It is helpful for the program to throw an error if the input is unexpected, otherwise it will continue silently.
 
 ```python
 # Good
@@ -91,9 +91,9 @@ df_3 = df_1.merge(df_2)
 
 Users should explicitly specify the `how` and `on` parameters of a merge for readability, even if the default parameters would produce the same result.
 
-It is also important to validate the merge type using the `validate` parameter, this prevents unexpected "merge duplication". Upstream data can subtly changed which produces multiple rows per merge key. If no validation is performed, the data here will silently multiply and duplicate, as the operation will be promoted to a "many-to-one" or "many-to-many" producing "merge duplication". It is therefore useful to have the merge assumptions explicitly stated.
+It is also important to validate the merge type using the `validate` parameter, this prevents unexpected "merge duplication". Upstream data can subtly change, which produces multiple rows per merge key. If no validation is performed, the data here will silently multiply and duplicate, as the operation will be promoted to a "many-to-one" or "many-to-many" producing "merge duplication". It is therefore useful to have the merge assumptions explicitly stated.
 
-Also, don't deduplicate rows after a merge to remove merge duplication. Remove duplicates before joining, or even better determine why there are unexpected duplicate keys and remove them upstream. Merge duplication are computationally and memory expensive and produce hard to debug data bugs.
+Also, don't deduplicate rows after a merge to remove merge duplication. Remove duplicates before joining, or even better, determine why there are unexpected duplicate keys and remove them upstream. Merge duplication are computationally and memory expensive and produce hard to debug data bugs.
 
 ## Empty columns
 
@@ -108,7 +108,7 @@ df['new_col_int'] = 0
 df['new_col_str'] = ''
 ```
 
-If a new empty column is needed always use NaN values. Never use "filler" values such as zeros or empty strings. This preserves the ability to use methods such as `isnull` or `notnull`.
+If a new empty column is needed, always use NaN values. Never use "filler" values such as zeros or empty strings. This preserves the ability to use methods such as `isnull` or `notnull`.
 
 ## Mutability of DataFrames
 
