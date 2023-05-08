@@ -50,6 +50,7 @@ When querying a dataframe users should use `.loc` and not the shorthand `[]` not
 
 Why:
 * This avoids ambiguity with the `[]` operator which can be used for both column selection and querying
+* There are [corner cases](https://stackoverflow.com/questions/38886080/python-pandas-series-why-use-loc) where `[]` and `.loc` do not return the same value.
 * SettingWithCopy errors can occur when using the `[]` operator 
 
 ## Schema contract
